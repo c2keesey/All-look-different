@@ -32,7 +32,8 @@ const quizScreen = document.getElementById('quiz-screen');
 const resultsScreen = document.getElementById('results-screen');
 const startBtn = document.getElementById('start-btn');
 const retryBtn = document.getElementById('retry-btn');
-const progressText = document.getElementById('progress');
+const progressNumber = document.getElementById('progress-number');
+const progressFill = document.getElementById('progress-fill');
 const personPhoto = document.getElementById('person-photo');
 const optionBtns = document.querySelectorAll('.option-btn');
 const scoreDisplay = document.getElementById('score');
@@ -55,6 +56,13 @@ function showScreen(screen) {
     screen.classList.add('active');
 }
 
+// Update progress bar
+function updateProgress() {
+    const progress = ((currentQuestion) / shuffledQuiz.length) * 100;
+    progressFill.style.width = `${progress}%`;
+    progressNumber.textContent = currentQuestion + 1;
+}
+
 // Start the quiz
 function startQuiz() {
     currentQuestion = 0;
@@ -67,13 +75,13 @@ function startQuiz() {
 // Load current question
 function loadQuestion() {
     const question = shuffledQuiz[currentQuestion];
-    progressText.textContent = `Question ${currentQuestion + 1} of ${shuffledQuiz.length}`;
+    updateProgress();
 
     // Set image - use placeholder if image doesn't load
     personPhoto.src = question.image;
     personPhoto.onerror = function() {
         // Generate a placeholder with a number
-        this.src = `https://ui-avatars.com/api/?name=${question.id}&background=random&size=300&font-size=0.5`;
+        this.src = `https://ui-avatars.com/api/?name=${question.id}&background=random&size=400&font-size=0.5`;
     };
 
     // Reset button states
@@ -114,7 +122,7 @@ function selectAnswer(nationality) {
         } else {
             showResults();
         }
-    }, 1000);
+    }, 800);
 }
 
 // Show results
@@ -152,7 +160,7 @@ function showResults() {
                  onerror="this.src='https://ui-avatars.com/api/?name=${answer.question.id}&background=random&size=100&font-size=0.5'">
             <div class="result-info">
                 <div class="your-answer">Your answer: ${nationalityLabels[answer.userAnswer]}</div>
-                <div class="correct-answer" style="color: ${answer.correct ? '#4caf50' : '#f44336'}">
+                <div class="correct-answer" style="color: ${answer.correct ? '#5cb85c' : '#d9534f'}">
                     Correct: ${nationalityLabels[answer.question.nationality]}
                 </div>
             </div>

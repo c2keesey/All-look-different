@@ -3,57 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AllLookDifferent - European Edition</title>
+    <title>AllLookDifferent? - European Edition</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-text"><span class="bold">ALL</span>LOOK<span class="bold">DIFFERENT</span><span class="bold">?</span></span>
+            </div>
+            <p class="tagline">Examination of European Experience</p>
+        </header>
+
         <!-- Intro Screen -->
         <div id="intro-screen" class="screen active">
-            <h1>AllLookDifferent</h1>
-            <h2>European Edition</h2>
-            <div class="intro-content">
-                <p>Do all Europeans look the same to you?</p>
-                <p>This quiz tests your ability to distinguish between people from different European countries.</p>
-                <p>You will be shown <strong>18 photos</strong> of people who are 100% British, German, or French.</p>
-                <p>Your job: Identify which country each person is from.</p>
-                <div class="stats-box">
-                    <p><strong>Average Score:</strong> 7 out of 18</p>
-                    <p>Can you do better?</p>
+            <div class="exam-room-header">
+                <h2>Exam Room</h2>
+            </div>
+            <div class="quiz-category">
+                <div class="category-image">
+                    <img src="https://ui-avatars.com/api/?name=EU&background=ddd&size=150&font-size=0.4" alt="Faces">
+                </div>
+                <div class="category-info">
+                    <h3>Faces</h3>
+                    <p>These are photos of Europeans. The people who appear in these pictures are 100% British, German or French; nobody is mixed.</p>
+                    <button id="start-btn" class="start-btn">Start Exam</button>
                 </div>
             </div>
-            <button id="start-btn" class="btn primary">Start the Quiz</button>
         </div>
 
         <!-- Quiz Screen -->
         <div id="quiz-screen" class="screen">
-            <div class="quiz-header">
-                <span id="progress">Question 1 of 18</span>
+            <div class="photo-frame">
+                <img id="person-photo" src="" alt="Person photo">
             </div>
-            <div class="quiz-content">
-                <div class="photo-container">
-                    <img id="person-photo" src="" alt="Person photo">
-                </div>
-                <p class="question">What nationality is this person?</p>
-                <div class="options">
-                    <button class="option-btn" data-answer="british">British</button>
-                    <button class="option-btn" data-answer="german">German</button>
-                    <button class="option-btn" data-answer="french">French</button>
+
+            <div class="options">
+                <button class="option-btn" data-answer="british">
+                    <span class="letter">B</span>
+                    <span class="label">British</span>
+                </button>
+                <button class="option-btn" data-answer="german">
+                    <span class="letter">G</span>
+                    <span class="label">German</span>
+                </button>
+                <button class="option-btn" data-answer="french">
+                    <span class="letter">F</span>
+                    <span class="label">French</span>
+                </button>
+            </div>
+
+            <div class="progress-section">
+                <span id="progress-number">1</span>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
                 </div>
             </div>
         </div>
 
         <!-- Results Screen -->
         <div id="results-screen" class="screen">
-            <h1>Your Results</h1>
-            <div class="score-display">
-                <span id="score">0</span> / 18
+            <div class="exam-room-header">
+                <h2>Results</h2>
             </div>
-            <p id="score-message"></p>
-            <div id="results-breakdown" class="results-breakdown">
-                <!-- Results will be populated here -->
+            <div class="results-content">
+                <div class="score-display">
+                    <span id="score">0</span> / 18
+                </div>
+                <p id="score-message"></p>
+                <div id="results-breakdown" class="results-breakdown">
+                    <!-- Results will be populated here -->
+                </div>
+                <button id="retry-btn" class="start-btn">Try Again</button>
             </div>
-            <button id="retry-btn" class="btn primary">Try Again</button>
         </div>
     </div>
 
