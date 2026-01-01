@@ -1,3 +1,6 @@
+// Leaderboard API URL - replace with your deployed worker URL
+const LEADERBOARD_API = 'https://your-worker.your-subdomain.workers.dev';
+
 // Quiz data - 18 people with their nationalities
 // Using placeholder images - replace with actual photos
 const quizData = [
@@ -25,6 +28,9 @@ const quizData = [
 let currentQuestion = 0;
 let answers = [];
 let shuffledQuiz = [];
+let playerName = '';
+let lastScore = 0;
+let scoreSaved = false;
 
 // DOM Elements
 const introScreen = document.getElementById('intro-screen');
@@ -39,6 +45,18 @@ const optionBtns = document.querySelectorAll('.option-btn');
 const scoreDisplay = document.getElementById('score');
 const scoreMessage = document.getElementById('score-message');
 const resultsBreakdown = document.getElementById('results-breakdown');
+
+// Leaderboard DOM Elements
+const playerNameInput = document.getElementById('player-name');
+const viewLeaderboardBtn = document.getElementById('view-leaderboard-btn');
+const leaderboardScreen = document.getElementById('leaderboard-screen');
+const leaderboardList = document.getElementById('leaderboard-list');
+const leaderboardEmpty = document.getElementById('leaderboard-empty');
+const leaderboardError = document.getElementById('leaderboard-error');
+const backToIntroBtn = document.getElementById('back-to-intro-btn');
+const saveScoreBtn = document.getElementById('save-score-btn');
+const saveStatus = document.getElementById('save-status');
+const resultsLeaderboardBtn = document.getElementById('results-leaderboard-btn');
 
 // Utility function to shuffle array
 function shuffleArray(array) {
@@ -65,9 +83,11 @@ function updateProgress() {
 
 // Start the quiz
 function startQuiz() {
+    playerName = playerNameInput.value.trim() || 'Anonymous';
     currentQuestion = 0;
     answers = [];
     shuffledQuiz = shuffleArray(quizData);
+    scoreSaved = false;
     showScreen(quizScreen);
     loadQuestion();
 }
@@ -128,7 +148,14 @@ function selectAnswer(nationality) {
 // Show results
 function showResults() {
     const correctCount = answers.filter(a => a.correct).length;
+    lastScore = correctCount;
     scoreDisplay.textContent = correctCount;
+
+    // Reset save button state
+    saveStatus.textContent = '';
+    saveStatus.className = '';
+    saveScoreBtn.disabled = false;
+    saveScoreBtn.textContent = 'Save Score';
 
     // Set message based on score
     if (correctCount >= 15) {
@@ -174,6 +201,82 @@ function showResults() {
     showScreen(resultsScreen);
 }
 
+// Fetch and display leaderboard
+async function fetchLeaderboard() {
+    leaderboardList.innerHTML = '';
+    leaderboardEmpty.style.display = 'none';
+    leaderboardError.style.display = 'none';
+
+    try {
+        const response = await fetch(`${LEADERBOARD_API}/leaderboard`);
+        if (!response.ok) throw new Error('Failed to fetch');
+
+        const data = await response.json();
+
+        if (data.length === 0) {
+            leaderboardEmpty.style.display = 'block';
+            return;
+        }
+
+        data.forEach((entry, index) => {
+            const div = document.createElement('div');
+            div.className = 'leaderboard-entry';
+
+            let rankClass = '';
+            if (index === 0) rankClass = 'gold';
+            else if (index === 1) rankClass = 'silver';
+            else if (index === 2) rankClass = 'bronze';
+
+            div.innerHTML = `
+                <span class="leaderboard-rank ${rankClass}">${index + 1}</span>
+                <span class="leaderboard-name">${escapeHtml(entry.name)}</span>
+                <span class="leaderboard-score">${entry.score}/18</span>
+            `;
+            leaderboardList.appendChild(div);
+        });
+    } catch (error) {
+        leaderboardError.style.display = 'block';
+    }
+}
+
+// Save score to leaderboard
+async function saveScore() {
+    if (scoreSaved) return;
+
+    saveScoreBtn.disabled = true;
+    saveScoreBtn.textContent = 'Saving...';
+    saveStatus.textContent = '';
+    saveStatus.className = '';
+
+    try {
+        const response = await fetch(`${LEADERBOARD_API}/leaderboard`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: playerName, score: lastScore })
+        });
+
+        if (!response.ok) throw new Error('Failed to save');
+
+        const data = await response.json();
+        scoreSaved = true;
+        saveStatus.textContent = `Saved! You ranked #${data.rank}`;
+        saveStatus.className = 'success';
+        saveScoreBtn.textContent = 'Saved!';
+    } catch (error) {
+        saveStatus.textContent = 'Could not save score. Try again.';
+        saveStatus.className = 'error';
+        saveScoreBtn.disabled = false;
+        saveScoreBtn.textContent = 'Save Score';
+    }
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // Event listeners
 startBtn.addEventListener('click', startQuiz);
 retryBtn.addEventListener('click', () => {
@@ -185,3 +288,20 @@ optionBtns.forEach(btn => {
         selectAnswer(btn.dataset.answer);
     });
 });
+
+// Leaderboard event listeners
+viewLeaderboardBtn.addEventListener('click', () => {
+    fetchLeaderboard();
+    showScreen(leaderboardScreen);
+});
+
+resultsLeaderboardBtn.addEventListener('click', () => {
+    fetchLeaderboard();
+    showScreen(leaderboardScreen);
+});
+
+backToIntroBtn.addEventListener('click', () => {
+    showScreen(introScreen);
+});
+
+saveScoreBtn.addEventListener('click', saveScore);

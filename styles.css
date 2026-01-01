@@ -298,6 +298,136 @@ body {
     color: #d9534f;
 }
 
+/* Name Input */
+.name-input-group {
+    margin-bottom: 15px;
+}
+
+.name-input-group input {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    width: 100%;
+    max-width: 250px;
+}
+
+.name-input-group input:focus {
+    outline: none;
+    border-color: #4a90d9;
+}
+
+/* Secondary Button */
+.start-btn.secondary {
+    background: #999;
+    margin-left: 10px;
+}
+
+.start-btn.secondary:hover {
+    background: #888;
+}
+
+/* Save Score Section */
+.save-score-section {
+    margin: 20px 0;
+}
+
+#save-status {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    min-height: 1.2em;
+}
+
+#save-status.success {
+    color: #5cb85c;
+}
+
+#save-status.error {
+    color: #d9534f;
+}
+
+/* Results Actions */
+.results-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Leaderboard Screen */
+.leaderboard-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.leaderboard-list {
+    max-height: 450px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.leaderboard-entry:last-child {
+    border-bottom: none;
+}
+
+.leaderboard-entry.highlight {
+    background: #fff3cd;
+}
+
+.leaderboard-rank {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #666;
+    width: 40px;
+    text-align: center;
+}
+
+.leaderboard-rank.gold {
+    color: #ffd700;
+}
+
+.leaderboard-rank.silver {
+    color: #c0c0c0;
+}
+
+.leaderboard-rank.bronze {
+    color: #cd7f32;
+}
+
+.leaderboard-name {
+    flex: 1;
+    font-size: 1rem;
+    color: #333;
+    padding: 0 15px;
+}
+
+.leaderboard-score {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4a90d9;
+}
+
+.leaderboard-empty,
+.leaderboard-error {
+    padding: 40px 20px;
+    color: #888;
+    font-size: 1rem;
+}
+
+.leaderboard-error {
+    color: #d9534f;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .logo-text {
@@ -327,5 +457,28 @@ body {
 
     .score-display {
         font-size: 2.5rem;
+    }
+
+    .results-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .start-btn.secondary {
+        margin-left: 0;
+    }
+
+    .leaderboard-entry {
+        padding: 10px 12px;
+    }
+
+    .leaderboard-rank {
+        width: 30px;
+        font-size: 1rem;
+    }
+
+    .leaderboard-name {
+        font-size: 0.9rem;
+        padding: 0 10px;
     }
 }
