@@ -1,5 +1,5 @@
-// Leaderboard API URL - replace with your deployed worker URL
-const LEADERBOARD_API = 'https://your-worker.your-subdomain.workers.dev';
+// Leaderboard API URL
+const LEADERBOARD_API = 'https://alllookdifferent-leaderboard.c2k-projects.workers.dev';
 
 // Quiz data - 18 people with their nationalities
 // Using placeholder images - replace with actual photos
