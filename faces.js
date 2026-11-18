@@ -103,7 +103,7 @@ const FACES = [
   "name": "Luke Jermay",
   "born": 1985,
   "image": "images/faces/Q1877040.jpg",
-  "author": "Unknown",
+  "author": "a Wikimedia Commons contributor",
   "license": "CC BY 2.5",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
   "source": "https://commons.wikimedia.org/wiki/File:LukeJermay.JPG",

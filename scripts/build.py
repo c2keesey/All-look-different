@@ -6,7 +6,7 @@ PICK = {
  "french":  [0,5,7,14,16,20,21,25,32,34,44,45,48,49,52,56,60,66,67,70,73,74,76,77,83,84,86,87],
 }
 def clean(s):
-    s = re.sub(r"<[^>]+>", "", s); s = html.unescape(s); s = re.sub(r"^User:", "", re.sub(r"\s+", " ", s).strip()); return s[:120] or "Unknown"
+    s = re.sub(r"<[^>]+>", "", s); s = html.unescape(s); s = re.sub(r"^User:", "", re.sub(r"\s+", " ", s).strip()); return s[:120] or "a Wikimedia Commons contributor"
 outdir = os.path.join(repo, "images", "faces"); os.makedirs(outdir, exist_ok=True)
 faces = []
 for nat, idxs in PICK.items():
