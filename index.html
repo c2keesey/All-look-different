@@ -3,84 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AllLookDifferent? - European Edition</title>
+    <title>All Look Different? A border desk game</title>
+    <meta name="description" content="Eighteen travellers. British, German or French. Their photo is all you get. Stamp the right passport.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Public+Sans:ital,wght@0,400;0,600;0,800;1,400&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <span class="logo-text"><span class="bold">ALL</span>LOOK<span class="bold">DIFFERENT</span><span class="bold">?</span></span>
-            </div>
-            <p class="tagline">Examination of European Experience</p>
-        </header>
+    <main class="desk">
 
-        <!-- Intro Screen -->
-        <div id="intro-screen" class="screen active">
-            <div class="exam-room-header">
-                <h2>Exam Room</h2>
+        <!-- Arrival: the closed passport -->
+        <section id="intro-screen" class="screen active" aria-labelledby="title">
+            <div class="cover">
+                <svg class="cover-emblem" viewBox="0 0 120 120" aria-hidden="true">
+                    <circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="60" cy="60" r="36" fill="none" stroke="currentColor" stroke-width="1"/>
+                    <g fill="currentColor">
+                        <circle cx="60" cy="22" r="3"/><circle cx="79" cy="27" r="3"/><circle cx="93" cy="41" r="3"/>
+                        <circle cx="98" cy="60" r="3"/><circle cx="93" cy="79" r="3"/><circle cx="79" cy="93" r="3"/>
+                        <circle cx="60" cy="98" r="3"/><circle cx="41" cy="93" r="3"/><circle cx="27" cy="79" r="3"/>
+                        <circle cx="22" cy="60" r="3"/><circle cx="27" cy="41" r="3"/><circle cx="41" cy="27" r="3"/>
+                    </g>
+                    <text x="60" y="68" text-anchor="middle" font-size="22" fill="currentColor" font-family="Young Serif, serif">?</text>
+                </svg>
+                <h1 id="title" class="cover-title">All look<br>different?</h1>
+                <p class="cover-sub">A border desk game</p>
             </div>
-            <div class="quiz-category">
-                <div class="category-image">
-                    <img src="https://ui-avatars.com/api/?name=EU&background=ddd&size=150&font-size=0.4" alt="Faces">
+
+            <div class="briefing">
+                <p class="briefing-lede">You're on the passport desk. Eighteen travellers are in the queue.</p>
+                <p>Each one is British, German or French by birth and by passport. You get their photo and nothing else. Stamp the country you think they're from.</p>
+                <form id="start-form" class="start-form">
+                    <label for="player-name">Your name for the duty roster</label>
+                    <div class="start-row">
+                        <input type="text" id="player-name" maxlength="20" autocomplete="nickname" placeholder="Officer">
+                        <button type="submit" class="btn btn-primary">Open the desk</button>
+                    </div>
+                </form>
+                <p class="briefing-links">
+                    <button type="button" class="link" data-goto="leaderboard-screen">See the duty roster</button>
+                    <button type="button" class="link" data-goto="credits-screen">Photo credits</button>
+                </p>
+            </div>
+        </section>
+
+        <!-- On duty: the open passport -->
+        <section id="quiz-screen" class="screen" aria-label="Passport check">
+            <div class="queue" aria-live="polite">
+                <span>Traveller <strong id="progress-number">1</strong> of 18</span>
+                <ol class="queue-dots" id="queue-dots" aria-hidden="true"></ol>
+            </div>
+
+            <div class="passport" id="passport">
+                <div class="page page-photo">
+                    <div class="photo-slot">
+                        <img id="person-photo" src="" alt="Traveller's passport photo">
+                    </div>
+                    <p class="photo-caption">Holder's photograph</p>
                 </div>
-                <div class="category-info">
-                    <h3>Faces</h3>
-                    <p>These are photos of Europeans. The people who appear in these pictures are 100% British, German or French; nobody is mixed.</p>
-                    <button id="start-btn" class="start-btn">Start Exam</button>
+                <div class="page page-data">
+                    <dl class="fields">
+                        <div><dt>Name</dt><dd id="field-name"><span class="redacted">Withheld</span></dd></div>
+                        <div><dt>Born</dt><dd id="field-born"><span class="redacted">Withheld</span></dd></div>
+                        <div><dt>Nationality</dt><dd id="field-nat" class="field-nat">To be stamped</dd></div>
+                    </dl>
+                    <div class="stamp-zone" id="stamp-zone" aria-hidden="true"></div>
+                    <p class="mrz" id="mrz" aria-hidden="true">P&lt;EUR&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Quiz Screen -->
-        <div id="quiz-screen" class="screen">
-            <div class="photo-frame">
-                <img id="person-photo" src="" alt="Person photo">
-            </div>
-
-            <div class="options">
-                <button class="option-btn" data-answer="british">
-                    <span class="letter">B</span>
-                    <span class="label">British</span>
+            <div class="stamps" role="group" aria-label="Stamp a nationality">
+                <button class="stamp-btn" data-answer="british" data-key="1">
+                    <span class="stamp-face">British</span><kbd>1</kbd>
                 </button>
-                <button class="option-btn" data-answer="german">
-                    <span class="letter">G</span>
-                    <span class="label">German</span>
+                <button class="stamp-btn" data-answer="german" data-key="2">
+                    <span class="stamp-face">German</span><kbd>2</kbd>
                 </button>
-                <button class="option-btn" data-answer="french">
-                    <span class="letter">F</span>
-                    <span class="label">French</span>
+                <button class="stamp-btn" data-answer="french" data-key="3">
+                    <span class="stamp-face">French</span><kbd>3</kbd>
                 </button>
             </div>
+        </section>
 
-            <div class="progress-section">
-                <span id="progress-number">1</span>
-                <div class="progress-bar">
-                    <div id="progress-fill" class="progress-fill"></div>
-                </div>
-            </div>
-        </div>
+        <!-- End of shift -->
+        <section id="results-screen" class="screen" aria-labelledby="results-title">
+            <header class="report-head">
+                <h2 id="results-title">Shift report</h2>
+                <p class="report-officer">Officer <span id="report-name">Officer</span></p>
+                <p class="report-score"><span id="score">0</span><span class="of">/18</span></p>
+                <p id="score-message" class="report-verdict"></p>
+            </header>
 
-        <!-- Results Screen -->
-        <div id="results-screen" class="screen">
-            <div class="exam-room-header">
-                <h2>Results</h2>
+            <div class="report-actions">
+                <button id="save-score-btn" class="btn btn-primary">Add me to the roster</button>
+                <button id="retry-btn" class="btn">Work another shift</button>
+                <button type="button" class="btn" data-goto="leaderboard-screen">See the duty roster</button>
+                <p id="save-status" class="save-status" role="status"></p>
             </div>
-            <div class="results-content">
-                <div class="score-display">
-                    <span id="score">0</span> / 18
-                </div>
-                <p id="score-message"></p>
-                <div id="results-breakdown" class="results-breakdown">
-                    <!-- Results will be populated here -->
-                </div>
-                <button id="retry-btn" class="start-btn">Try Again</button>
-            </div>
-        </div>
-    </div>
 
+            <h3 class="report-sub">Who came through</h3>
+            <ol id="results-breakdown" class="ledger"></ol>
+        </section>
+
+        <!-- Duty roster -->
+        <section id="leaderboard-screen" class="screen" aria-labelledby="roster-title">
+            <h2 id="roster-title">Duty roster</h2>
+            <p class="roster-note">The fifty best shifts worked at this desk.</p>
+            <p id="leaderboard-loading" class="roster-msg">Fetching the roster…</p>
+            <p id="leaderboard-empty" class="roster-msg" hidden>Nobody has signed the roster yet. Work a shift and be first.</p>
+            <p id="leaderboard-error" class="roster-msg" hidden>The roster didn't load. Check your connection and open it again.</p>
+            <ol id="leaderboard-list" class="roster"></ol>
+            <button type="button" class="btn" data-goto="intro-screen">Back to the desk</button>
+        </section>
+
+        <!-- Credits -->
+        <section id="credits-screen" class="screen" aria-labelledby="credits-title">
+            <h2 id="credits-title">Photo credits</h2>
+            <p class="credits-note">Every traveller is a real person with a Wikidata entry and a single citizenship, photographed by a Wikimedia Commons contributor under a free licence. The photos here are cropped from the originals. Names and photographers are listed below.</p>
+            <ul id="credits-list" class="credits"></ul>
+            <button type="button" class="btn" data-goto="intro-screen">Back to the desk</button>
+        </section>
+
+    </main>
+
+    <script src="faces.js"></script>
     <script src="quiz.js"></script>
 </body>
 </html>
